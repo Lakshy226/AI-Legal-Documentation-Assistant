@@ -1,0 +1,1112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LegalEase — Document Builder</title>
+<style>
+    :root {
+      --ink: #202334;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --brand: #4f46e5;
+      --soft: #eef2ff;
+      --bg: #f6f7fb;
+      --card: #fff
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font: 14px Arial, Helvetica, sans-serif
+    }
+
+    .sidebar {
+      position: fixed;
+      inset: 0 auto 0 0;
+      width: 250px;
+      padding: 25px 18px;
+      background: #fff;
+      border-right: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      z-index: 3
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 21px;
+      margin-bottom: 42px
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: .08em;
+      font-weight: 700;
+      color: #9ca3af;
+      margin: 0 12px 12px
+    }
+
+    .nav-btn {
+      border: 0;
+      background: transparent;
+      color: #5b6172;
+      text-align: left;
+      border-radius: 9px;
+      padding: 13px 14px;
+      margin-bottom: 5px;
+      cursor: pointer;
+      font-size: 14px
+    }
+
+    .nav-btn:hover,
+    .nav-btn.active {
+      background: var(--soft);
+      color: var(--brand)
+    }
+
+    .sidebar-bottom {
+      border-top: 1px solid #eee;
+      margin-top: auto;
+      padding-top: 20px;
+      color: var(--muted);
+      font-size: 13px
+    }
+
+    .sidebar-bottom small {
+      color: #9ca3af
+    }
+
+    .main {
+      margin-left: 250px;
+      min-height: 100vh;
+      padding: 35px 45px
+    }
+
+    .topbar,
+    .section-heading,
+    .result-header,
+    .editor-toolbar,
+    .list-item,
+    .field-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px
+    }
+
+    .topbar {
+      margin-bottom: 30px
+    }
+
+    .welcome {
+      margin: 0 0 5px;
+      color: #8b90a0;
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: .06em
+    }
+
+    h1 {
+      font-size: 30px;
+      margin: 0
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 22px
+    }
+
+    p {
+      line-height: 1.5
+    }
+
+    .page {
+      display: none
+    }
+
+    .page.active {
+      display: block
+    }
+
+    .primary,
+    .secondary,
+    .text-btn,
+    .icon-btn {
+      border-radius: 8px;
+      padding: 11px 16px;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700
+    }
+
+    .primary {
+      border: 0;
+      background: var(--brand);
+      color: #fff
+    }
+
+    .primary:hover {
+      background: #4338ca
+    }
+
+    .secondary {
+      border: 1px solid #d7d9e0;
+      background: #fff;
+      color: #444
+    }
+
+    .text-btn,
+    .icon-btn {
+      border: 0;
+      background: none;
+      color: var(--brand)
+    }
+
+    .icon-btn {
+      font-size: 18px;
+      padding: 8px
+    }
+
+    .hero {
+      padding: 45px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #eef2ff, #f5f3ff);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 5px 9px;
+      margin-bottom: 14px;
+      border-radius: 20px;
+      background: #e0e7ff;
+      color: var(--brand);
+      font-size: 10px;
+      font-weight: bold
+    }
+
+    .hero h2 {
+      font-size: 35px;
+      line-height: 1.2;
+      margin-bottom: 14px
+    }
+
+    .hero h2 span {
+      color: var(--brand)
+    }
+
+    .hero p {
+      max-width: 560px;
+      color: var(--muted)
+    }
+
+    .hero-icon {
+      font-size: 100px
+    }
+
+    .stats,
+    .template-grid,
+    .document-grid,
+    .how-grid {
+      display: grid;
+      gap: 16px
+    }
+
+    .stats {
+      grid-template-columns: repeat(3, 1fr);
+      margin: 25px 0 35px
+    }
+
+    .stat-card,
+    .card,
+    .activity-box,
+    .form-card,
+    .editor,
+    .version-card,
+    .notice {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px
+    }
+
+    .stat-card {
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px
+    }
+
+    .stat-icon {
+      background: #f1f2ff;
+      padding: 12px;
+      border-radius: 9px;
+      font-size: 20px
+    }
+
+    .stat-card h3 {
+      font-size: 22px;
+      margin: 0
+    }
+
+    .stat-card p,
+    .hint,
+    .section-heading p {
+      color: #858999;
+      font-size: 12px;
+      margin: 3px 0 0
+    }
+
+    .section-heading {
+      margin: 28px 0 14px
+    }
+
+    .template-grid {
+      grid-template-columns: repeat(4, 1fr)
+    }
+
+    .template-card,
+    .document-option {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 12px;
+      padding: 22px;
+      text-align: left;
+      cursor: pointer;
+      transition: .18s
+    }
+
+    .template-card:hover,
+    .document-option:hover {
+      border-color: #a5b4fc;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px #0000000d
+    }
+
+    .template-icon,
+    .document-option .icon {
+      font-size: 27px;
+      margin-bottom: 12px
+    }
+
+    .template-card h3,
+    .document-option strong {
+      display: block;
+      margin: 0 0 6px;
+      font-size: 15px
+    }
+
+    .template-card p,
+    .document-option small {
+      margin: 0;
+      color: #858999;
+      font-size: 12px
+    }
+
+    .activity-box {
+      padding: 10px 22px
+    }
+
+    .empty {
+      color: #9ca3af;
+      text-align: center;
+      padding: 18px
+    }
+
+    .list-item {
+      padding: 14px 0;
+      border-bottom: 1px solid #eee
+    }
+
+    .list-item:last-child {
+      border: 0
+    }
+
+    .list-meta {
+      font-size: 12px;
+      color: #858999
+    }
+
+    .list-title {
+      font-weight: 700
+    }
+
+    .document-grid {
+      grid-template-columns: repeat(3, 1fr)
+    }
+
+    .step {
+      font-size: 11px;
+      color: var(--brand);
+      font-weight: bold;
+      letter-spacing: .07em
+    }
+
+    .step-header {
+      margin-bottom: 24px
+    }
+
+    .step-header h2 {
+      font-size: 28px;
+      margin: 8px 0
+    }
+
+    .step-header p {
+      color: #7b8090
+    }
+
+    .form-card {
+      max-width: 900px;
+      padding: 28px
+    }
+
+    .selected {
+      background: #f4f4ff;
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 22px
+    }
+
+    .selected small {
+      display: block;
+      color: #777;
+      margin-bottom: 3px
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px
+    }
+
+    .form-group {
+      margin-bottom: 18px
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: bold;
+      font-size: 13px;
+      margin-bottom: 7px
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      border: 1px solid #dfe1e7;
+      border-radius: 7px;
+      padding: 12px;
+      font: inherit;
+      background: #fff
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      outline: 2px solid #c7d2fe;
+      border-color: var(--brand)
+    }
+
+    .error {
+      display: block;
+      color: #b91c1c;
+      font-size: 12px;
+      margin-top: 5px;
+      min-height: 15px
+    }
+
+    .invalid {
+      border-color: #dc2626
+    }
+
+    .consent {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: #f8f8fb;
+      padding: 16px;
+      border-radius: 8px;
+      line-height: 1.5
+    }
+
+    .consent input {
+      width: auto;
+      margin-top: 3px
+    }
+
+    .generating {
+      text-align: center;
+      padding: 80px 30px
+    }
+
+    .loader {
+      width: 45px;
+      height: 45px;
+      border: 5px solid #e5e7eb;
+      border-top-color: var(--brand);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    .notice {
+      padding: 14px 16px;
+      background: #fffbeb;
+      border-color: #fde68a;
+      color: #78350f;
+      margin-bottom: 18px
+    }
+
+    .health {
+      padding: 14px 18px;
+      margin-bottom: 18px
+    }
+
+    .health strong {
+      color: #15803d
+    }
+
+    .editor {
+      overflow: hidden
+    }
+
+    .editor-toolbar {
+      padding: 13px 18px;
+      border-bottom: 1px solid #eee
+    }
+
+    .save-status {
+      color: #15803d;
+      font-size: 12px
+    }
+
+    .editor textarea {
+      border: 0;
+      border-radius: 0;
+      min-height: 480px;
+      padding: 28px;
+      font: 16px/1.7 Georgia, serif
+    }
+
+    .version-card {
+      margin-top: 18px;
+      padding: 18px
+    }
+
+    .version {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      padding: 11px 0;
+      border-bottom: 1px solid #eee
+    }
+
+    .version:last-child {
+      border: 0
+    }
+
+    .version small {
+      color: #858999
+    }
+
+    .version button {
+      margin-left: auto
+    }
+
+    .how-grid {
+      grid-template-columns: repeat(5, 1fr)
+    }
+
+    .how-card {
+      padding: 22px
+    }
+
+    .number {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--brand);
+      color: #fff;
+      font-weight: bold
+    }
+
+    .toast {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      background: #202334;
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: 8px;
+      box-shadow: 0 8px 25px #0003;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: .2s;
+      pointer-events: none
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: none
+    }
+
+    .mobile-menu {
+      display: none
+    }
+
+    @media(max-width:1000px) {
+      .template-grid {
+        grid-template-columns: repeat(2, 1fr)
+      }
+
+      .document-grid {
+        grid-template-columns: repeat(2, 1fr)
+      }
+
+      .how-grid {
+        grid-template-columns: repeat(3, 1fr)
+      }
+    }
+
+    @media(max-width:700px) {
+      .sidebar {
+        transform: translateX(-100%);
+        transition: .2s
+      }
+
+      .sidebar.open {
+        transform: none
+      }
+
+      .mobile-menu {
+        display: inline-block
+      }
+
+      .main {
+        margin: 0;
+        padding: 20px
+      }
+
+      .topbar {
+        align-items: flex-start
+      }
+
+      .topbar .primary {
+        display: none
+      }
+
+      .hero {
+        padding: 27px
+      }
+
+      .hero-icon {
+        display: none
+      }
+
+      .hero h2 {
+        font-size: 29px
+      }
+
+      .stats,
+      .template-grid,
+      .document-grid,
+      .form-row,
+      .how-grid {
+        grid-template-columns: 1fr
+      }
+
+      .result-header,
+      .editor-toolbar {
+        align-items: flex-start;
+        flex-direction: column
+      }
+
+      .result-actions {
+        display: flex;
+        flex-wrap: wrap
+      }
+
+      .sidebar-bottom {
+        display: none
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff
+      }
+
+      .sidebar,
+      .topbar,
+      .result-actions,
+      .health,
+      .version-card,
+      .toast {
+        display: none !important
+      }
+
+      .main {
+        margin: 0;
+        padding: 0
+      }
+
+      .page {
+        display: none !important
+      }
+
+      .page#print-view {
+        display: block !important
+      }
+
+      .editor {
+        border: 0
+      }
+
+      .editor-toolbar {
+        display: none
+      }
+
+      .editor textarea {
+        height: auto;
+        min-height: 0;
+        padding: 0;
+        overflow: visible;
+        white-space: pre-wrap
+      }
+    }
+  
+.language-control{display:flex;align-items:center;gap:5px;border:1px solid #d7d9e0;background:#fff;color:#444;border-radius:8px;padding:8px 10px;font:inherit}
+.language-control select{width:auto;border:0;padding:2px;background:transparent;cursor:pointer;color:inherit}
+.theme-btn{border:1px solid #d7d9e0;background:#fff!important;color:#444!important}
+body.dark-mode{--ink:#f1f5f9;--muted:#aab3c2;--line:#334155;--bg:#0f172a;--card:#182235}
+body.dark-mode .sidebar,body.dark-mode .stat-card,body.dark-mode .card,body.dark-mode .activity-box,body.dark-mode .form-card,body.dark-mode .editor,body.dark-mode .version-card,body.dark-mode .template-card,body.dark-mode .document-option{background:#182235;border-color:#334155;color:#f1f5f9}
+body.dark-mode .secondary,body.dark-mode .language-control,body.dark-mode .theme-btn,body.dark-mode input,body.dark-mode textarea,body.dark-mode select{background:#111827;color:#f1f5f9;border-color:#475569}
+body.dark-mode .nav-btn{color:#cbd5e1}
+body.dark-mode .consent{background:#111827}
+body.dark-mode .selected{background:#202a3d}
+body.dark-mode .notice{background:#422006;color:#fde68a;border-color:#854d0e}
+body.dark-mode .stat-icon{background:#202a3d}
+body.dark-mode .editor-toolbar,body.dark-mode .version{border-color:#334155}
+body.dark-mode .list-item{border-color:#334155}
+</style>
+</head>
+
+<body>
+  <aside class="sidebar" id="sidebar">
+    <div class="logo">⚖️ <span>LegalEase AI</span></div>
+    <p class="eyebrow" data-i18n="workspace">WORKSPACE</p>
+    <button class="nav-btn active" data-page="dashboard">🏠 <span data-i18n="dashboard">Dashboard</span></button>
+    <button class="nav-btn" data-page="documents">📄 <span data-i18n="myDocuments">My Documents</span></button>
+    <button class="nav-btn" data-page="templates">📚 <span data-i18n="templates">Templates</span></button>
+    <button class="nav-btn" data-page="help">❓ <span data-i18n="howItWorks">How it works</span></button>
+
+    <div class="sidebar-bottom">
+      <span data-i18n="aiLegalDocumentation">AI Legal Documentation</span><br>
+      <small data-i18n="localPrivate">Local • Private • Frontend-only</small>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <button class="icon-btn mobile-menu" id="menuBtn" aria-label="Open navigation">☰</button>
+        <p class="welcome" data-i18n="welcome">WELCOME BACK 👋</p>
+        <h1 id="pageTitle">Dashboard</h1>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <label class="language-control" title="Language">
+          🌐 <select id="languageSelect" aria-label="Language"></select>
+        </label>
+        <button class="icon-btn theme-btn" id="themeBtn" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button>
+        <button class="primary" data-action="start">+ <span data-i18n="createDocument">Create Document</span></button>
+      </div>
+    </header>
+
+    <section class="page active" id="dashboard">
+      <div class="hero">
+        <div>
+          <span class="badge" data-i18n="structuredBuilder">STRUCTURED DOCUMENT BUILDER</span>
+          <h2><span data-i18n="createLegalDocuments">Create legal documents</span><br><span data-i18n="withoutJargon">without the legal jargon.</span></h2>
+          <p data-i18n="heroDescription">Choose a template, answer a few questions, and create an editable draft in your browser.</p>
+          <button class="primary" data-action="start"><span data-i18n="createADocument">Create a Document</span> →</button>
+        </div>
+        <div class="hero-icon">⚖️</div>
+      </div>
+
+      <div class="stats">
+        <div class="stat-card"><div class="stat-icon">📄</div><div><h3 id="documentCount">0</h3><p data-i18n="documentsCreated">Documents Created</p></div></div>
+        <div class="stat-card"><div class="stat-icon">⏱️</div><div><h3>10 min</h3><p data-i18n="averageTimeSaved">Average Time Saved</p></div></div>
+        <div class="stat-card"><div class="stat-icon">🔒</div><div><h3 data-i18n="local">Local</h3><p data-i18n="storedInBrowser">Stored in this browser</p></div></div>
+      </div>
+
+      <div class="section-heading">
+        <div><h2 data-i18n="popularDocuments">Popular Documents</h2><p data-i18n="startWithTemplate">Start with a document template</p></div>
+        <button class="text-btn" data-page="templates"><span data-i18n="viewAll">View all</span> →</button>
+      </div>
+      <div class="template-grid" id="popularTemplates"></div>
+
+      <div class="section-heading">
+        <div><h2 data-i18n="recentActivity">Recent Activity</h2><p data-i18n="recentlyCreated">Your recently created documents</p></div>
+      </div>
+      <div class="activity-box" id="recentDocuments"></div>
+    </section>
+
+    <section class="page" id="documents">
+      <div class="section-heading">
+        <div><span class="step" data-i18n="step1of3">STEP 1 OF 3</span><h2 data-i18n="myDocuments">My Documents</h2><p data-i18n="openEditCreate">Open, edit, or create a document.</p></div>
+        <button class="primary" data-action="start">+ <span data-i18n="newDocument">New document</span></button>
+      </div>
+      <div class="activity-box" id="allDocuments"></div>
+    </section>
+
+    <section class="page" id="templates">
+      <div class="step-header"><span class="step" data-i18n="step1of3">STEP 1 OF 3</span><h2 data-i18n="whatDocument">What document do you need?</h2><p data-i18n="selectTemplate">Select a template to get started.</p></div>
+      <div class="document-grid" id="templateGrid"></div>
+    </section>
+
+    <section class="page" id="form">
+      <div class="step-header"><span class="step" data-i18n="step2of3">STEP 2 OF 3</span><h2 data-i18n="tellUs">Tell us about the document</h2><p data-i18n="requiredFields">Required fields are marked with an asterisk.</p></div>
+      <form class="form-card" id="documentForm" novalidate>
+        <div class="selected"><small data-i18n="selectedDocument">SELECTED DOCUMENT</small><strong id="selectedName"></strong></div>
+        <div id="dynamicFields"></div>
+        <label class="consent"><input id="consent" type="checkbox" required><span data-i18n="consentText">I understand this is a general-purpose, deterministic template tool—not legal advice—and I should obtain qualified legal review when appropriate.</span></label>
+        <span class="error" id="consentError"></span>
+        <div class="field-actions"><button class="secondary" type="button" data-page="templates" data-i18n="back">Back</button><button class="primary" type="submit"><span data-i18n="createDraft">Create draft</span> →</button></div>
+      </form>
+    </section>
+
+    <section class="page" id="generating">
+      <div class="card generating"><div class="loader"></div><h2 data-i18n="buildingDraft">Building your draft</h2><p data-i18n="applyingTemplate">Applying the selected template to the information you provided.</p></div>
+    </section>
+
+    <section class="page" id="editor">
+      <div class="result-header">
+        <div><span class="step" data-i18n="step3of3">STEP 3 OF 3</span><h2 id="editorTitle">Document draft</h2><p class="hint" data-i18n="editDirectly">Edit directly; changes are saved locally.</p></div>
+        <div class="result-actions"><button class="secondary" id="copyBtn" data-i18n="copy">Copy</button><button class="secondary" id="printBtn" data-i18n="printPdf">Print / Save PDF</button><button class="primary" id="saveBtn" data-i18n="saveVersion">Save version</button></div>
+      </div>
+      <div class="notice"><strong data-i18n="prototypeNotice">Prototype notice:</strong> <span data-i18n="prototypeText">this draft is assembled from fixed local templates and your inputs. No AI or legal-service API is being used.</span></div>
+      <div class="health card"><strong data-i18n="draftReady">✓ Draft ready</strong><p class="hint" data-i18n="reviewBeforeUse">Review names, dates, amounts, jurisdiction, and any legal requirements before use.</p></div>
+      <div class="editor" id="print-view"><div class="editor-toolbar"><strong data-i18n="editableDocument">Editable document</strong><span class="save-status" id="saveStatus" data-i18n="savedLocally">Saved locally</span></div><textarea id="editorText" aria-label="Document content"></textarea></div>
+      <div class="version-card">
+        <div class="section-heading"><h2 data-i18n="versionHistory">Version history</h2><button class="text-btn" id="clearVersions" data-i18n="clearVersions">Clear versions</button></div>
+        <div id="versions"></div>
+      </div>
+    </section>
+
+    <section class="page" id="help">
+      <div class="step-header"><h2 data-i18n="howItWorks">How it works</h2><p data-i18n="everythingBrowser">Everything runs in your browser.</p></div>
+      <div class="how-grid">
+        <div class="card how-card"><div class="number">1</div><h3 data-i18n="choose">Choose</h3><p data-i18n="chooseDesc">Select a document type.</p></div>
+        <div class="card how-card"><div class="number">2</div><h3 data-i18n="provideDetails">Provide details</h3><p data-i18n="provideDesc">Complete the relevant fields.</p></div>
+        <div class="card how-card"><div class="number">3</div><h3 data-i18n="create">Create</h3><p data-i18n="createDesc">A fixed template becomes an editable draft.</p></div>
+        <div class="card how-card"><div class="number">4</div><h3 data-i18n="review">Review</h3><p data-i18n="reviewDesc">Edit and use version restore as needed.</p></div>
+        <div class="card how-card"><div class="number">5</div><h3 data-i18n="export">Export</h3><p data-i18n="exportDesc">Copy or print to save as PDF.</p></div>
+      </div>
+    </section>
+  </main>
+  <div class="toast" id="toast" role="status"></div>
+
+<script>
+(() => {
+'use strict';
+
+const LANGS = {
+  en:'English', hi:'हिन्दी', gu:'ગુજરાતી', kn:'ಕನ್ನಡ', mr:'मराठी',
+  bn:'বাংলা', ta:'தமிழ்', te:'తెలుగు', ml:'മലയാളം', pa:'ਪੰਜਾਬੀ', or:'ଓଡ଼ିଆ', as:'অসমীয়া'
+};
+
+const I18N = {
+en:{
+workspace:'WORKSPACE',dashboard:'Dashboard',myDocuments:'My Documents',templates:'Templates',howItWorks:'How it works',
+aiLegalDocumentation:'AI Legal Documentation',localPrivate:'Local • Private • Frontend-only',welcome:'WELCOME BACK 👋',
+createDocument:'Create Document',structuredBuilder:'STRUCTURED DOCUMENT BUILDER',createLegalDocuments:'Create legal documents',
+withoutJargon:'without the legal jargon.',heroDescription:'Choose a template, answer a few questions, and create an editable draft in your browser.',
+createADocument:'Create a Document',documentsCreated:'Documents Created',averageTimeSaved:'Average Time Saved',local:'Local',storedInBrowser:'Stored in this browser',
+popularDocuments:'Popular Documents',startWithTemplate:'Start with a document template',viewAll:'View all',recentActivity:'Recent Activity',
+recentlyCreated:'Your recently created documents',step1of3:'STEP 1 OF 3',openEditCreate:'Open, edit, or create a document.',newDocument:'New document',
+whatDocument:'What document do you need?',selectTemplate:'Select a template to get started.',step2of3:'STEP 2 OF 3',
+tellUs:'Tell us about the document',requiredFields:'Required fields are marked with an asterisk.',selectedDocument:'SELECTED DOCUMENT',
+consentText:'I understand this is a general-purpose, deterministic template tool—not legal advice—and I should obtain qualified legal review when appropriate.',
+back:'Back',createDraft:'Create draft',buildingDraft:'Building your draft',applyingTemplate:'Applying the selected template to the information you provided.',
+step3of3:'STEP 3 OF 3',editDirectly:'Edit directly; changes are saved locally.',copy:'Copy',printPdf:'Print / Save PDF',saveVersion:'Save version',
+prototypeNotice:'Prototype notice:',prototypeText:'this draft is assembled from fixed local templates and your inputs. No AI or legal-service API is being used.',
+draftReady:'✓ Draft ready',reviewBeforeUse:'Review names, dates, amounts, jurisdiction, and any legal requirements before use.',
+editableDocument:'Editable document',savedLocally:'Saved locally',versionHistory:'Version history',clearVersions:'Clear versions',
+everythingBrowser:'Everything runs in your browser.',choose:'Choose',chooseDesc:'Select a document type.',provideDetails:'Provide details',provideDesc:'Complete the relevant fields.',
+create:'Create',createDesc:'A fixed template becomes an editable draft.',review:'Review',reviewDesc:'Edit and use version restore as needed.',
+export:'Export',exportDesc:'Copy or print to save as PDF.',open:'Open',delete:'Delete',updated:'Updated',noDocuments:'No documents created yet.',
+required:'This field is required.',acknowledge:'Please acknowledge this notice to continue.',draftCreated:'Draft created locally',
+copied:'Copied to clipboard',copyUnavailable:'Copy unavailable; select the text manually.',versionSaved:'Version saved',versionRestored:'Version restored',
+restore:'Restore',noEarlierVersions:'No earlier versions yet. Save a version after editing to keep a restore point.',
+restoreConfirm:'Restore this version? Your current text will be kept as a new version.',deleteConfirm:'Delete this local document?',
+deleted:'Document deleted',clearConfirm:'Clear all saved version history?',versionsCleared:'Version history cleared',saving:'Saving…',language:'Language',
+darkMode:'Dark mode',lightMode:'Light mode',documentContent:'Document content',version:'Version'
+},
+hi:{
+workspace:'कार्यस्थल',dashboard:'डैशबोर्ड',myDocuments:'मेरे दस्तावेज़',templates:'टेम्पलेट',howItWorks:'यह कैसे काम करता है',
+aiLegalDocumentation:'AI कानूनी दस्तावेज़ीकरण',localPrivate:'स्थानीय • निजी • केवल फ्रंटएंड',welcome:'वापसी पर स्वागत है 👋',
+createDocument:'दस्तावेज़ बनाएँ',structuredBuilder:'संरचित दस्तावेज़ बिल्डर',createLegalDocuments:'कानूनी दस्तावेज़ बनाएँ',
+withoutJargon:'बिना कठिन कानूनी भाषा के।',heroDescription:'टेम्पलेट चुनें, कुछ प्रश्नों के उत्तर दें और अपने ब्राउज़र में संपादन योग्य ड्राफ्ट बनाएँ।',
+createADocument:'दस्तावेज़ बनाएँ',documentsCreated:'बनाए गए दस्तावेज़',averageTimeSaved:'औसत समय बचत',local:'स्थानीय',storedInBrowser:'इस ब्राउज़र में संग्रहीत',
+popularDocuments:'लोकप्रिय दस्तावेज़',startWithTemplate:'दस्तावेज़ टेम्पलेट से शुरू करें',viewAll:'सभी देखें',recentActivity:'हाल की गतिविधि',
+recentlyCreated:'आपके हाल में बनाए गए दस्तावेज़',step1of3:'चरण 1 / 3',openEditCreate:'दस्तावेज़ खोलें, संपादित करें या बनाएँ।',newDocument:'नया दस्तावेज़',
+whatDocument:'आपको कौन सा दस्तावेज़ चाहिए?',selectTemplate:'शुरू करने के लिए एक टेम्पलेट चुनें।',step2of3:'चरण 2 / 3',
+tellUs:'दस्तावेज़ के बारे में बताएँ',requiredFields:'आवश्यक फ़ील्ड पर तारांकन लगा है।',selectedDocument:'चयनित दस्तावेज़',
+consentText:'मैं समझता/समझती हूँ कि यह सामान्य प्रयोजन का टेम्पलेट टूल है, कानूनी सलाह नहीं। आवश्यकता होने पर योग्य कानूनी समीक्षा लेनी चाहिए।',
+back:'वापस',createDraft:'ड्राफ्ट बनाएँ',buildingDraft:'आपका ड्राफ्ट बनाया जा रहा है',applyingTemplate:'आपके द्वारा दी गई जानकारी पर चयनित टेम्पलेट लागू किया जा रहा है।',
+step3of3:'चरण 3 / 3',editDirectly:'सीधे संपादित करें; बदलाव स्थानीय रूप से सहेजे जाते हैं।',copy:'कॉपी',printPdf:'प्रिंट / PDF सहेजें',saveVersion:'संस्करण सहेजें',
+prototypeNotice:'प्रोटोटाइप सूचना:',prototypeText:'यह ड्राफ्ट स्थानीय निश्चित टेम्पलेट और आपकी जानकारी से बनाया गया है। कोई AI या कानूनी सेवा API उपयोग नहीं हो रही है।',
+draftReady:'✓ ड्राफ्ट तैयार',reviewBeforeUse:'उपयोग से पहले नाम, तारीख, राशि, क्षेत्राधिकार और कानूनी आवश्यकताओं की समीक्षा करें।',
+editableDocument:'संपादन योग्य दस्तावेज़',savedLocally:'स्थानीय रूप से सहेजा गया',versionHistory:'संस्करण इतिहास',clearVersions:'संस्करण साफ़ करें',
+everythingBrowser:'सब कुछ आपके ब्राउज़र में चलता है।',choose:'चुनें',chooseDesc:'दस्तावेज़ का प्रकार चुनें।',provideDetails:'विवरण दें',provideDesc:'संबंधित फ़ील्ड भरें।',
+create:'बनाएँ',createDesc:'एक निश्चित टेम्पलेट संपादन योग्य ड्राफ्ट बन जाता है।',review:'समीक्षा करें',reviewDesc:'आवश्यकतानुसार संपादित करें और संस्करण पुनर्स्थापित करें।',
+export:'निर्यात करें',exportDesc:'कॉपी या प्रिंट करके PDF के रूप में सहेजें।',open:'खोलें',delete:'हटाएँ',updated:'अपडेट किया गया',noDocuments:'अभी तक कोई दस्तावेज़ नहीं बनाया गया।',
+required:'यह फ़ील्ड आवश्यक है।',acknowledge:'जारी रखने के लिए कृपया इस सूचना को स्वीकार करें।',draftCreated:'ड्राफ्ट स्थानीय रूप से बनाया गया',
+copied:'क्लिपबोर्ड पर कॉपी किया गया',copyUnavailable:'कॉपी उपलब्ध नहीं है; टेक्स्ट को मैन्युअली चुनें।',versionSaved:'संस्करण सहेजा गया',versionRestored:'संस्करण पुनर्स्थापित किया गया',
+restore:'पुनर्स्थापित करें',noEarlierVersions:'अभी कोई पुराना संस्करण नहीं है। संपादन के बाद संस्करण सहेजें।',restoreConfirm:'क्या यह संस्करण पुनर्स्थापित करें? वर्तमान टेक्स्ट नए संस्करण के रूप में सुरक्षित रहेगा।',
+deleteConfirm:'क्या यह स्थानीय दस्तावेज़ हटाएँ?',deleted:'दस्तावेज़ हटाया गया',clearConfirm:'क्या पूरा संस्करण इतिहास साफ़ करें?',versionsCleared:'संस्करण इतिहास साफ़ किया गया',saving:'सहेजा जा रहा है…',language:'भाषा',
+darkMode:'डार्क मोड',lightMode:'लाइट मोड',documentContent:'दस्तावेज़ सामग्री',version:'संस्करण'
+},
+gu:{
+workspace:'કાર્યસ્થળ',dashboard:'ડેશબોર્ડ',myDocuments:'મારા દસ્તાવેજો',templates:'ટેમ્પલેટ્સ',howItWorks:'આ કેવી રીતે કામ કરે છે',
+aiLegalDocumentation:'AI કાનૂની દસ્તાવેજીકરણ',localPrivate:'સ્થાનિક • ખાનગી • માત્ર ફ્રન્ટએન્ડ',welcome:'ફરી સ્વાગત છે 👋',
+createDocument:'દસ્તાવેજ બનાવો',structuredBuilder:'સ્ટ્રક્ચર્ડ ડોક્યુમેન્ટ બિલ્ડર',createLegalDocuments:'કાનૂની દસ્તાવેજો બનાવો',
+withoutJargon:'કઠિન કાનૂની ભાષા વિના.',heroDescription:'ટેમ્પલેટ પસંદ કરો, થોડા પ્રશ્નોના જવાબ આપો અને બ્રાઉઝરમાં સંપાદન કરી શકાય તેવો ડ્રાફ્ટ બનાવો.',
+createADocument:'દસ્તાવેજ બનાવો',documentsCreated:'બનાવેલા દસ્તાવેજો',averageTimeSaved:'સરેરાશ બચેલો સમય',local:'સ્થાનિક',storedInBrowser:'આ બ્રાઉઝરમાં સંગ્રહિત',
+popularDocuments:'લોકપ્રિય દસ્તાવેજો',startWithTemplate:'દસ્તાવેજ ટેમ્પલેટથી શરૂ કરો',viewAll:'બધા જુઓ',recentActivity:'તાજેતરની પ્રવૃત્તિ',
+recentlyCreated:'તમારા તાજેતરમાં બનાવેલા દસ્તાવેજો',step1of3:'પગલું 1 / 3',openEditCreate:'દસ્તાવેજ ખોલો, સંપાદિત કરો અથવા બનાવો.',newDocument:'નવો દસ્તાવેજ',
+whatDocument:'તમને કયો દસ્તાવેજ જોઈએ છે?',selectTemplate:'શરૂ કરવા માટે ટેમ્પલેટ પસંદ કરો.',step2of3:'પગલું 2 / 3',
+tellUs:'દસ્તાવેજ વિશે જણાવો',requiredFields:'જરૂરી ફીલ્ડ પર તારકચિહ્ન છે.',selectedDocument:'પસંદ કરેલ દસ્તાવેજ',
+consentText:'હું સમજું છું કે આ સામાન્ય હેતુનું ટેમ્પલેટ ટૂલ છે, કાનૂની સલાહ નથી. જરૂર પડે ત્યારે યોગ્ય કાનૂની સમીક્ષા લેવી જોઈએ.',
+back:'પાછળ',createDraft:'ડ્રાફ્ટ બનાવો',buildingDraft:'તમારો ડ્રાફ્ટ બની રહ્યો છે',applyingTemplate:'તમે આપેલી માહિતી પર પસંદ કરેલ ટેમ્પલેટ લાગુ થઈ રહ્યું છે.',
+step3of3:'પગલું 3 / 3',editDirectly:'સીધું સંપાદિત કરો; ફેરફારો સ્થાનિક રીતે સાચવાય છે.',copy:'કૉપી',printPdf:'પ્રિન્ટ / PDF સાચવો',saveVersion:'વર્ઝન સાચવો',
+prototypeNotice:'પ્રોટોટાઇપ સૂચના:',prototypeText:'આ ડ્રાફ્ટ સ્થાનિક નિશ્ચિત ટેમ્પલેટ અને તમારી માહિતીથી બનાવાયો છે. કોઈ AI અથવા કાનૂની સેવા API વપરાતી નથી.',
+draftReady:'✓ ડ્રાફ્ટ તૈયાર',reviewBeforeUse:'ઉપયોગ પહેલાં નામ, તારીખ, રકમ, અધિકારક્ષેત્ર અને કાનૂની જરૂરિયાતોની સમીક્ષા કરો.',
+editableDocument:'સંપાદનયોગ્ય દસ્તાવેજ',savedLocally:'સ્થાનિક રીતે સાચવેલ',versionHistory:'વર્ઝન ઇતિહાસ',clearVersions:'વર્ઝન સાફ કરો',
+everythingBrowser:'બધું તમારા બ્રાઉઝરમાં ચાલે છે.',choose:'પસંદ કરો',chooseDesc:'દસ્તાવેજનો પ્રકાર પસંદ કરો.',provideDetails:'વિગતો આપો',provideDesc:'સંબંધિત ફીલ્ડ ભરો.',
+create:'બનાવો',createDesc:'નિશ્ચિત ટેમ્પલેટ સંપાદનયોગ્ય ડ્રાફ્ટ બને છે.',review:'સમીક્ષા કરો',reviewDesc:'જરૂર મુજબ સંપાદિત કરો અને વર્ઝન પુનઃસ્થાપિત કરો.',
+export:'નિકાસ કરો',exportDesc:'કૉપી અથવા પ્રિન્ટ કરીને PDF તરીકે સાચવો.',open:'ખોલો',delete:'કાઢી નાખો',updated:'અપડેટ',noDocuments:'હજુ કોઈ દસ્તાવેજ બનાવાયો નથી.',
+required:'આ ફીલ્ડ જરૂરી છે.',acknowledge:'આગળ વધવા માટે કૃપા કરીને આ સૂચન સ્વીકારો.',draftCreated:'ડ્રાફ્ટ સ્થાનિક રીતે બનાવાયો',
+copied:'ક્લિપબોર્ડ પર કૉપી થયું',copyUnavailable:'કૉપી ઉપલબ્ધ નથી; ટેક્સ્ટ જાતે પસંદ કરો.',versionSaved:'વર્ઝન સાચવાયું',versionRestored:'વર્ઝન પુનઃસ્થાપિત થયું',
+restore:'પુનઃસ્થાપિત કરો',noEarlierVersions:'હજુ જૂના વર્ઝન નથી. સંપાદન પછી વર્ઝન સાચવો.',restoreConfirm:'આ વર્ઝન પુનઃસ્થાપિત કરવું છે? હાલનું ટેક્સ્ટ નવા વર્ઝન તરીકે સાચવાશે.',
+deleteConfirm:'આ સ્થાનિક દસ્તાવેજ કાઢી નાખવો છે?',deleted:'દસ્તાવેજ કાઢી નાખાયો',clearConfirm:'બધો વર્ઝન ઇતિહાસ સાફ કરવો છે?',versionsCleared:'વર્ઝન ઇતિહાસ સાફ થયો',saving:'સાચવી રહ્યું છે…',language:'ભાષા',
+darkMode:'ડાર્ક મોડ',lightMode:'લાઇટ મોડ',documentContent:'દસ્તાવેજ સામગ્રી',version:'વર્ઝન'
+},
+kn:{
+workspace:'ಕಾರ್ಯಸ್ಥಳ',dashboard:'ಡ್ಯಾಶ್‌ಬೋರ್ಡ್',myDocuments:'ನನ್ನ ದಾಖಲೆಗಳು',templates:'ಟೆಂಪ್ಲೇಟ್‌ಗಳು',howItWorks:'ಇದು ಹೇಗೆ ಕೆಲಸ ಮಾಡುತ್ತದೆ',
+aiLegalDocumentation:'AI ಕಾನೂನು ದಾಖಲೆ',localPrivate:'ಸ್ಥಳೀಯ • ಖಾಸಗಿ • ಫ್ರಂಟ್‌ಎಂಡ್ ಮಾತ್ರ',welcome:'ಮತ್ತೆ ಸ್ವಾಗತ 👋',
+createDocument:'ದಾಖಲೆ ರಚಿಸಿ',structuredBuilder:'ರಚಿತ ದಾಖಲೆ ಬಿಲ್ಡರ್',createLegalDocuments:'ಕಾನೂನು ದಾಖಲೆಗಳನ್ನು ರಚಿಸಿ',
+withoutJargon:'ಕಠಿಣ ಕಾನೂನು ಭಾಷೆಯಿಲ್ಲದೆ.',heroDescription:'ಟೆಂಪ್ಲೇಟ್ ಆಯ್ಕೆ ಮಾಡಿ, ಕೆಲವು ಪ್ರಶ್ನೆಗಳಿಗೆ ಉತ್ತರಿಸಿ ಮತ್ತು ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಸಂಪಾದಿಸಬಹುದಾದ ಕರಡು ರಚಿಸಿ.',
+createADocument:'ದಾಖಲೆ ರಚಿಸಿ',documentsCreated:'ರಚಿಸಿದ ದಾಖಲೆಗಳು',averageTimeSaved:'ಸರಾಸರಿ ಉಳಿಸಿದ ಸಮಯ',local:'ಸ್ಥಳೀಯ',storedInBrowser:'ಈ ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಸಂಗ್ರಹಿಸಲಾಗಿದೆ',
+popularDocuments:'ಜನಪ್ರಿಯ ದಾಖಲೆಗಳು',startWithTemplate:'ದಾಖಲೆ ಟೆಂಪ್ಲೇಟ್‌ನಿಂದ ಪ್ರಾರಂಭಿಸಿ',viewAll:'ಎಲ್ಲವನ್ನೂ ನೋಡಿ',recentActivity:'ಇತ್ತೀಚಿನ ಚಟುವಟಿಕೆ',
+recentlyCreated:'ನೀವು ಇತ್ತೀಚೆಗೆ ರಚಿಸಿದ ದಾಖಲೆಗಳು',step1of3:'ಹಂತ 1 / 3',openEditCreate:'ದಾಖಲೆಯನ್ನು ತೆರೆಯಿರಿ, ಸಂಪಾದಿಸಿ ಅಥವಾ ರಚಿಸಿ.',newDocument:'ಹೊಸ ದಾಖಲೆ',
+whatDocument:'ನಿಮಗೆ ಯಾವ ದಾಖಲೆ ಬೇಕು?',selectTemplate:'ಪ್ರಾರಂಭಿಸಲು ಟೆಂಪ್ಲೇಟ್ ಆಯ್ಕೆ ಮಾಡಿ.',step2of3:'ಹಂತ 2 / 3',
+tellUs:'ದಾಖಲೆಯ ಬಗ್ಗೆ ತಿಳಿಸಿ',requiredFields:'ಅಗತ್ಯ ಕ್ಷೇತ್ರಗಳಿಗೆ ನಕ್ಷತ್ರ ಚಿಹ್ನೆ ಇದೆ.',selectedDocument:'ಆಯ್ಕೆ ಮಾಡಿದ ದಾಖಲೆ',
+consentText:'ಇದು ಸಾಮಾನ್ಯ ಉದ್ದೇಶದ ಟೆಂಪ್ಲೇಟ್ ಸಾಧನ, ಕಾನೂನು ಸಲಹೆಯಲ್ಲ ಎಂಬುದನ್ನು ನಾನು ಅರ್ಥಮಾಡಿಕೊಂಡಿದ್ದೇನೆ. ಅಗತ್ಯವಿದ್ದಾಗ ಅರ್ಹ ಕಾನೂನು ಪರಿಶೀಲನೆ ಪಡೆಯಬೇಕು.',
+back:'ಹಿಂದೆ',createDraft:'ಕರಡು ರಚಿಸಿ',buildingDraft:'ನಿಮ್ಮ ಕರಡು ರಚಿಸಲಾಗುತ್ತಿದೆ',applyingTemplate:'ನೀವು ನೀಡಿದ ಮಾಹಿತಿಗೆ ಆಯ್ಕೆ ಮಾಡಿದ ಟೆಂಪ್ಲೇಟ್ ಅನ್ವಯಿಸಲಾಗುತ್ತಿದೆ.',
+step3of3:'ಹಂತ 3 / 3',editDirectly:'ನೇರವಾಗಿ ಸಂಪಾದಿಸಿ; ಬದಲಾವಣೆಗಳನ್ನು ಸ್ಥಳೀಯವಾಗಿ ಉಳಿಸಲಾಗುತ್ತದೆ.',copy:'ನಕಲಿಸಿ',printPdf:'ಮುದ್ರಿಸಿ / PDF ಉಳಿಸಿ',saveVersion:'ಆವೃತ್ತಿ ಉಳಿಸಿ',
+prototypeNotice:'ಪ್ರೋಟೋಟೈಪ್ ಸೂಚನೆ:',prototypeText:'ಈ ಕರಡು ಸ್ಥಿರ ಸ್ಥಳೀಯ ಟೆಂಪ್ಲೇಟ್‌ಗಳು ಮತ್ತು ನಿಮ್ಮ ಮಾಹಿತಿಯಿಂದ ರಚಿಸಲಾಗಿದೆ. ಯಾವುದೇ AI ಅಥವಾ ಕಾನೂನು ಸೇವಾ API ಬಳಸಲಾಗುತ್ತಿಲ್ಲ.',
+draftReady:'✓ ಕರಡು ಸಿದ್ಧ',reviewBeforeUse:'ಬಳಕೆಗೆ ಮೊದಲು ಹೆಸರುಗಳು, ದಿನಾಂಕಗಳು, ಮೊತ್ತಗಳು, ನ್ಯಾಯವ್ಯಾಪ್ತಿ ಮತ್ತು ಕಾನೂನು ಅಗತ್ಯಗಳನ್ನು ಪರಿಶೀಲಿಸಿ.',
+editableDocument:'ಸಂಪಾದಿಸಬಹುದಾದ ದಾಖಲೆ',savedLocally:'ಸ್ಥಳೀಯವಾಗಿ ಉಳಿಸಲಾಗಿದೆ',versionHistory:'ಆವೃತ್ತಿ ಇತಿಹಾಸ',clearVersions:'ಆವೃತ್ತಿಗಳನ್ನು ತೆರವುಗೊಳಿಸಿ',
+everythingBrowser:'ಎಲ್ಲವೂ ನಿಮ್ಮ ಬ್ರೌಸರ್‌ನಲ್ಲಿ ನಡೆಯುತ್ತದೆ.',choose:'ಆಯ್ಕೆ ಮಾಡಿ',chooseDesc:'ದಾಖಲೆ ಪ್ರಕಾರ ಆಯ್ಕೆ ಮಾಡಿ.',provideDetails:'ವಿವರಗಳನ್ನು ನೀಡಿ',provideDesc:'ಸಂಬಂಧಿತ ಕ್ಷೇತ್ರಗಳನ್ನು ಭರ್ತಿ ಮಾಡಿ.',
+create:'ರಚಿಸಿ',createDesc:'ಸ್ಥಿರ ಟೆಂಪ್ಲೇಟ್ ಸಂಪಾದಿಸಬಹುದಾದ ಕರಡು ಆಗುತ್ತದೆ.',review:'ಪರಿಶೀಲಿಸಿ',reviewDesc:'ಅಗತ್ಯವಿದ್ದಂತೆ ಸಂಪಾದಿಸಿ ಮತ್ತು ಆವೃತ್ತಿಯನ್ನು ಮರುಸ್ಥಾಪಿಸಿ.',
+export:'ರಫ್ತು',exportDesc:'ನಕಲಿಸಿ ಅಥವಾ ಮುದ್ರಿಸಿ PDF ಆಗಿ ಉಳಿಸಿ.',open:'ತೆರೆಯಿರಿ',delete:'ಅಳಿಸಿ',updated:'ನವೀಕರಿಸಲಾಗಿದೆ',noDocuments:'ಇನ್ನೂ ಯಾವುದೇ ದಾಖಲೆ ರಚಿಸಲಾಗಿಲ್ಲ.',
+required:'ಈ ಕ್ಷೇತ್ರ ಅಗತ್ಯವಾಗಿದೆ.',acknowledge:'ಮುಂದುವರಿಸಲು ದಯವಿಟ್ಟು ಈ ಸೂಚನೆಯನ್ನು ಅಂಗೀಕರಿಸಿ.',draftCreated:'ಕರಡು ಸ್ಥಳೀಯವಾಗಿ ರಚಿಸಲಾಗಿದೆ',
+copied:'ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ಗೆ ನಕಲಿಸಲಾಗಿದೆ',copyUnavailable:'ನಕಲು ಸಾಧ್ಯವಿಲ್ಲ; ಪಠ್ಯವನ್ನು ಕೈಯಾರೆ ಆಯ್ಕೆ ಮಾಡಿ.',versionSaved:'ಆವೃತ್ತಿ ಉಳಿಸಲಾಗಿದೆ',versionRestored:'ಆವೃತ್ತಿ ಮರುಸ್ಥಾಪಿಸಲಾಗಿದೆ',
+restore:'ಮರುಸ್ಥಾಪಿಸಿ',noEarlierVersions:'ಇನ್ನೂ ಹಳೆಯ ಆವೃತ್ತಿಗಳಿಲ್ಲ. ಸಂಪಾದಿಸಿದ ನಂತರ ಆವೃತ್ತಿಯನ್ನು ಉಳಿಸಿ.',restoreConfirm:'ಈ ಆವೃತ್ತಿಯನ್ನು ಮರುಸ್ಥಾಪಿಸಬೇಕೇ? ಪ್ರಸ್ತುತ ಪಠ್ಯವನ್ನು ಹೊಸ ಆವೃತ್ತಿಯಾಗಿ ಉಳಿಸಲಾಗುತ್ತದೆ.',
+deleteConfirm:'ಈ ಸ್ಥಳೀಯ ದಾಖಲೆಯನ್ನು ಅಳಿಸಬೇಕೇ?',deleted:'ದಾಖಲೆ ಅಳಿಸಲಾಗಿದೆ',clearConfirm:'ಎಲ್ಲಾ ಆವೃತ್ತಿ ಇತಿಹಾಸವನ್ನು ತೆರವುಗೊಳಿಸಬೇಕೇ?',versionsCleared:'ಆವೃತ್ತಿ ಇತಿಹಾಸ ತೆರವುಗೊಂಡಿದೆ',saving:'ಉಳಿಸಲಾಗುತ್ತಿದೆ…',language:'ಭಾಷೆ',
+darkMode:'ಡಾರ್ಕ್ ಮೋಡ್',lightMode:'ಲೈಟ್ ಮೋಡ್',documentContent:'ದಾಖಲೆ ವಿಷಯ',version:'ಆವೃತ್ತಿ'
+}
+};
+
+['mr','bn','ta','te','ml','pa','or','as'].forEach(k => { I18N[k] = {...I18N.en}; });
+
+const TEMPLATE_I18N = {
+'Rental Agreement':{en:['Rental Agreement','For landlords and tenants'],hi:['किराया समझौता','मकान मालिक और किरायेदारों के लिए'],gu:['ભાડા કરાર','મકાનમાલિક અને ભાડૂત માટે'],kn:['ಬಾಡಿಗೆ ಒಪ್ಪಂದ','ಮಾಲೀಕರು ಮತ್ತು ಬಾಡಿಗೆದಾರರಿಗೆ']},
+'Non-Disclosure Agreement':{en:['Non-Disclosure Agreement','Protect confidential information'],hi:['गोपनीयता समझौता','गोपनीय जानकारी की सुरक्षा'],gu:['ગોપનીયતા કરાર','ગોપનીય માહિતીનું રક્ષણ'],kn:['ಗೌಪ್ಯತಾ ಒಪ್ಪಂದ','ಗೌಪ್ಯ ಮಾಹಿತಿಯನ್ನು ರಕ್ಷಿಸಲು']},
+'Employment Agreement':{en:['Employment Agreement','Define employment terms'],hi:['रोज़गार समझौता','रोज़गार की शर्तें तय करें'],gu:['રોજગાર કરાર','રોજગારની શરતો નક્કી કરો'],kn:['ಉದ್ಯೋಗ ಒಪ್ಪಂದ','ಉದ್ಯೋಗದ ನಿಯಮಗಳನ್ನು ನಿಗದಿಪಡಿಸಿ']},
+'Service Agreement':{en:['Service Agreement','For clients and service providers'],hi:['सेवा समझौता','ग्राहकों और सेवा प्रदाताओं के लिए'],gu:['સેવા કરાર','ગ્રાહકો અને સેવા પ્રદાતાઓ માટે'],kn:['ಸೇವಾ ಒಪ್ಪಂದ','ಗ್ರಾಹಕರು ಮತ್ತು ಸೇವಾ ಪೂರೈಕೆದಾರರಿಗೆ']},
+'Independent Contractor Agreement':{en:['Independent Contractor Agreement','Define a contractor engagement'],hi:['स्वतंत्र ठेकेदार समझौता','ठेकेदार की सेवा तय करें'],gu:['સ્વતંત્ર કોન્ટ્રાક્ટર કરાર','કોન્ટ્રાક્ટર સંબંધ નક્કી કરો'],kn:['ಸ್ವತಂತ್ರ ಗುತ್ತಿಗೆದಾರ ಒಪ್ಪಂದ','ಗುತ್ತಿಗೆದಾರರ ಕಾರ್ಯವನ್ನು ನಿಗದಿಪಡಿಸಿ']},
+'Loan Agreement':{en:['Loan Agreement','Record a private loan and repayment'],hi:['ऋण समझौता','निजी ऋण और पुनर्भुगतान दर्ज करें'],gu:['લોન કરાર','ખાનગી લોન અને ચુકવણી નોંધો'],kn:['ಸಾಲ ಒಪ್ಪಂದ','ಖಾಸಗಿ ಸಾಲ ಮತ್ತು ಮರುಪಾವತಿ ದಾಖಲಿಸಿ']},
+'Bill of Sale':{en:['Bill of Sale','Transfer ownership of personal property'],hi:['बिक्री विलेख','व्यक्तिगत संपत्ति का स्वामित्व हस्तांतरित करें'],gu:['વેચાણ દસ્તાવેજ','વ્યક્તિગત મિલકતનું માલિકી હસ્તાંતરણ'],kn:['ಮಾರಾಟ ಪತ್ರ','ವೈಯಕ್ತಿಕ ಆಸ್ತಿಯ ಮಾಲೀಕತ್ವ ವರ್ಗಾಯಿಸಿ']},
+'Partnership Agreement':{en:['Partnership Agreement','Set out a business partnership'],hi:['साझेदारी समझौता','व्यावसायिक साझेदारी तय करें'],gu:['ભાગીદારી કરાર','વ્યવસાયિક ભાગીદારી નક્કી કરો'],kn:['ಪಾಲುದಾರಿಕೆ ಒಪ್ಪಂದ','ವ್ಯವಹಾರ ಪಾಲುದಾರಿಕೆಯನ್ನು ನಿಗದಿಪಡಿಸಿ']},
+'Power of Attorney':{en:['Power of Attorney','Authorize an agent for specified matters'],hi:['मुख्तारनामा','निर्दिष्ट मामलों के लिए प्रतिनिधि अधिकृत करें'],gu:['પાવર ઑફ એટર્ની','ચોક્કસ બાબતો માટે એજન્ટને અધિકૃત કરો'],kn:['ಪವರ್ ಆಫ್ ಅಟಾರ್ನಿ','ನಿರ್ದಿಷ್ಟ ವಿಷಯಗಳಿಗೆ ಪ್ರತಿನಿಧಿಯನ್ನು ಅಧಿಕೃತಗೊಳಿಸಿ']}
+};
+
+const FIELD_I18N = {
+'Landlord full name':['मकान मालिक का पूरा नाम','મકાનમાલિકનું પૂરું નામ','ಮಾಲೀಕರ ಪೂರ್ಣ ಹೆಸರು'],
+'Tenant full name':['किरायेदार का पूरा नाम','ભાડૂતનું પૂરું નામ','ಬಾಡಿಗೆದಾರರ ಪೂರ್ಣ ಹೆಸರು'],
+'Rental property address':['किराये की संपत्ति का पता','ભાડાની મિલકતનું સરનામું','ಬಾಡಿಗೆ ಆಸ್ತಿಯ ವಿಳಾಸ'],
+'Lease start date':['लीज़ शुरू होने की तारीख','લીઝ શરૂ થવાની તારીખ','ಲೀಸ್ ಪ್ರಾರಂಭ ದಿನಾಂಕ'],
+'Monthly rent':['मासिक किराया','માસિક ભાડું','ಮಾಸಿಕ ಬಾಡಿಗೆ'],
+'Lease term (e.g., 12 months)':['लीज़ अवधि (जैसे 12 महीने)','લીઝ અવધિ (દા.ત. 12 મહિના)','ಲೀಸ್ ಅವಧಿ (ಉದಾ. 12 ತಿಂಗಳು)'],
+'Governing jurisdiction':['लागू क्षेत्राधिकार','લાગુ અધિકારક્ષેત્ર','ಅನ್ವಯಿಸುವ ನ್ಯಾಯವ್ಯಾಪ್ತಿ']
+};
+
+const KEY='legalease.documents.v1';
+const TEMPLATES = {
+        'Rental Agreement': { icon: '🏠', desc: 'For landlords and tenants', fields: [['landlord', 'Landlord full name', 'text'], ['tenant', 'Tenant full name', 'text'], ['property', 'Rental property address', 'textarea'], ['startDate', 'Lease start date', 'date'], ['rent', 'Monthly rent', 'number'], ['term', 'Lease term (e.g., 12 months)', 'text'], ['jurisdiction', 'Governing jurisdiction', 'text']], build: d => `RENTAL AGREEMENT\n\nThis Rental Agreement is made on ${today()} between ${d.landlord} ("Landlord") and ${d.tenant} ("Tenant").\n\n1. PROPERTY\nThe Landlord rents to the Tenant the property located at:\n${d.property}\n\n2. TERM\nThe tenancy begins on ${date(d.startDate)} and continues for ${d.term}.\n\n3. RENT\nTenant will pay monthly rent of ${money(d.rent)}. Payment is due on the first day of each month.\n\n4. GOVERNING LAW\nThis agreement is governed by the laws of ${d.jurisdiction}.\n\nLANDLORD: ____________________    DATE: __________\nTENANT: ______________________    DATE: __________` },
+        'Non-Disclosure Agreement': { icon: '🔐', desc: 'Protect confidential information', fields: [['discloser', 'Disclosing party', 'text'], ['recipient', 'Receiving party', 'text'], ['purpose', 'Purpose of disclosure', 'textarea'], ['term', 'Confidentiality period (e.g., 2 years)', 'text'], ['jurisdiction', 'Governing jurisdiction', 'text']], build: d => `MUTUAL NON-DISCLOSURE AGREEMENT\n\nThis Agreement is made on ${today()} between ${d.discloser} ("Disclosing Party") and ${d.recipient} ("Receiving Party").\n\n1. PURPOSE\nThe parties wish to discuss: ${d.purpose}\n\n2. CONFIDENTIAL INFORMATION\nThe Receiving Party will protect non-public information disclosed in connection with the Purpose and use it only for that Purpose.\n\n3. TERM\nThese confidentiality obligations continue for ${d.term} from the date of disclosure.\n\n4. GOVERNING LAW\nThis Agreement is governed by the laws of ${d.jurisdiction}.\n\nDISCLOSING PARTY: ______________    DATE: __________\nRECEIVING PARTY: _______________    DATE: __________` },
+        'Employment Agreement': { icon: '💼', desc: 'Define employment terms', fields: [['employer', 'Employer legal name', 'text'], ['employee', 'Employee full name', 'text'], ['role', 'Job title', 'text'], ['startDate', 'Start date', 'date'], ['salary', 'Annual salary', 'number'], ['jurisdiction', 'Governing jurisdiction', 'text']], build: d => `EMPLOYMENT AGREEMENT\n\nThis Employment Agreement is entered into on ${today()} between ${d.employer} ("Employer") and ${d.employee} ("Employee").\n\n1. POSITION\nEmployee will serve as ${d.role}, beginning on ${date(d.startDate)}.\n\n2. COMPENSATION\nEmployer will pay an annual salary of ${money(d.salary)}, subject to applicable withholdings and normal payroll practices.\n\n3. DUTIES\nEmployee will perform duties reasonably associated with the position and comply with Employer policies.\n\n4. GOVERNING LAW\nThis Agreement is governed by the laws of ${d.jurisdiction}.\n\nEMPLOYER: _____________________    DATE: __________\nEMPLOYEE: _____________________    DATE: __________` },
+        'Service Agreement': { icon: '🤝', desc: 'For clients and service providers', fields: [['provider', 'Service provider name', 'text'], ['client', 'Client name', 'text'], ['services', 'Description of services', 'textarea'], ['fee', 'Service fee', 'number'], ['startDate', 'Effective date', 'date'], ['jurisdiction', 'Governing jurisdiction', 'text']], build: d => `SERVICE AGREEMENT\n\nThis Service Agreement is made on ${today()} between ${d.provider} ("Provider") and ${d.client} ("Client").\n\n1. SERVICES\nProvider will perform the following services:\n${d.services}\n\n2. FEES\nClient will pay Provider ${money(d.fee)} for the services, according to mutually agreed billing terms.\n\n3. EFFECTIVE DATE\nThis Agreement is effective ${date(d.startDate)}.\n\n4. GOVERNING LAW\nThis Agreement is governed by the laws of ${d.jurisdiction}.\n\nPROVIDER: _____________________    DATE: __________\nCLIENT: _______________________    DATE: __________` },
+        'Independent Contractor Agreement': { icon: '🛠️', desc: 'Define a contractor engagement', fields: [['client', 'Client legal name', 'text'], ['contractor', 'Contractor legal name', 'text'], ['services', 'Services to be performed', 'textarea'], ['fee', 'Total project fee', 'number'], ['startDate', 'Start date', 'date'], ['jurisdiction', 'Governing jurisdiction', 'text']], build: d => `INDEPENDENT CONTRACTOR AGREEMENT\n\nThis Agreement is made on ${today()} between ${d.client} ("Client") and ${d.contractor} ("Contractor").\n\n1. SERVICES\nContractor will provide the following services:\n${d.services}\n\n2. INDEPENDENT STATUS\nContractor is an independent contractor and is not an employee, agent, or partner of Client.\n\n3. COMPENSATION\nClient will pay Contractor ${money(d.fee)} for the services, subject to agreed invoicing terms.\n\n4. TERM AND GOVERNING LAW\nThe engagement begins ${date(d.startDate)} and is governed by the laws of ${d.jurisdiction}.\n\nCLIENT: _______________________    DATE: __________\nCONTRACTOR: ___________________    DATE: __________` },
+        'Loan Agreement': { icon: '💰', desc: 'Record a private loan and repayment', fields: [['lender', 'Lender full name', 'text'], ['borrower', 'Borrower full name', 'text'], ['amount', 'Loan principal amount', 'number'], ['interest', 'Annual interest rate (%)', 'number'], ['startDate', 'Loan date', 'date'], ['repayment', 'Repayment terms', 'textarea'], ['jurisdiction', 'Governing jurisdiction', 'text']], build: d => `LOAN AGREEMENT\n\nThis Loan Agreement is made on ${today()} between ${d.lender} ("Lender") and ${d.borrower} ("Borrower").\n\n1. LOAN\nLender agrees to lend Borrower ${money(d.amount)} on ${date(d.startDate)}.\n\n2. INTEREST\nThe unpaid principal will bear interest at ${d.interest}% per year, unless prohibited by applicable law.\n\n3. REPAYMENT\nBorrower will repay the loan as follows:\n${d.repayment}\n\n4. GOVERNING LAW\nThis Agreement is governed by the laws of ${d.jurisdiction}.\n\nLENDER: _______________________    DATE: __________\nBORROWER: _____________________    DATE: __________` },
+        'Bill of Sale': { icon: '🚗', desc: 'Transfer ownership of personal property', fields: [['seller', 'Seller full name', 'text'], ['buyer', 'Buyer full name', 'text'], ['item', 'Description of property being sold', 'textarea'], ['price', 'Purchase price', 'number'], ['saleDate', 'Date of sale', 'date'], ['jurisdiction', 'Governing jurisdiction', 'text']], build: d => `BILL OF SALE\n\nOn ${date(d.saleDate)}, ${d.seller} ("Seller") sells, transfers, and conveys to ${d.buyer} ("Buyer") the following property:\n\n${d.item}\n\nPURCHASE PRICE\nBuyer will pay Seller ${money(d.price)}.\n\nSELLER REPRESENTATION\nSeller represents that Seller owns the property and has the right to transfer it. Except as expressly stated here, the property is transferred "as is."\n\nGOVERNING LAW\nThis Bill of Sale is governed by the laws of ${d.jurisdiction}.\n\nSELLER: _______________________    DATE: __________\nBUYER: ________________________    DATE: __________` },
+        'Partnership Agreement': { icon: '📈', desc: 'Set out a business partnership', fields: [['partnerOne', 'First partner full name', 'text'], ['partnerTwo', 'Second partner full name', 'text'], ['business', 'Business name and purpose', 'textarea'], ['contribution', 'Capital contributions and ownership split', 'textarea'], ['startDate', 'Effective date', 'date'], ['jurisdiction', 'Governing jurisdiction', 'text']], build: d => `PARTNERSHIP AGREEMENT\n\nThis Partnership Agreement is effective ${date(d.startDate)} between ${d.partnerOne} and ${d.partnerTwo} (together, the "Partners").\n\n1. BUSINESS\nThe Partners will operate the following business:\n${d.business}\n\n2. CONTRIBUTIONS AND OWNERSHIP\nThe Partners agree to the following contributions and ownership arrangement:\n${d.contribution}\n\n3. MANAGEMENT\nThe Partners will consult in good faith on material business decisions and maintain accurate business records.\n\n4. GOVERNING LAW\nThis Agreement is governed by the laws of ${d.jurisdiction}.\n\nPARTNER: ______________________    DATE: __________\nPARTNER: ______________________    DATE: __________` },
+        'Power of Attorney': { icon: '✍️', desc: 'Authorize an agent for specified matters', fields: [['principal', 'Principal full name', 'text'], ['agent', 'Agent full name', 'text'], ['powers', 'Specific powers being granted', 'textarea'], ['startDate', 'Effective date', 'date'], ['jurisdiction', 'Governing jurisdiction', 'text']], build: d => `LIMITED POWER OF ATTORNEY\n\nI, ${d.principal} ("Principal"), appoint ${d.agent} as my attorney-in-fact ("Agent"), effective ${date(d.startDate)}.\n\n1. LIMITED AUTHORITY\nAgent may act on my behalf only for the following matters:\n${d.powers}\n\n2. RELIANCE\nThird parties may rely on this document until they receive written notice that it has been revoked.\n\n3. GOVERNING LAW\nThis document is governed by the laws of ${d.jurisdiction}. Local execution, witness, and notarization requirements may apply.\n\nPRINCIPAL: ____________________    DATE: __________\nWITNESS / NOTARY: _____________    DATE: __________` }
+      }
+let docs=load(), selected=null, currentId=null, saveTimer=null;
+let lang=localStorage.getItem('legalease.language')||'en';
+let dark=localStorage.getItem('legalease.theme')==='dark';
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+function T(k){return (I18N[lang]&&I18N[lang][k])||I18N.en[k]||k}
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||[]}catch{return[]}}
+function persist(){localStorage.setItem(KEY,JSON.stringify(docs));renderLists()}
+function esc(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+function today(){return new Intl.DateTimeFormat(undefined,{year:'numeric',month:'long',day:'numeric'}).format(new Date())}
+function date(v){return v?new Intl.DateTimeFormat(undefined,{year:'numeric',month:'long',day:'numeric'}).format(new Date(v+'T00:00:00')):'[date]'}
+function money(v){return v?new Intl.NumberFormat(undefined,{style:'currency',currency:'USD'}).format(Number(v)):'[amount]'}
+function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2200)}
+function applyLanguage(){
+  document.documentElement.lang=lang;
+  $$('[data-i18n]').forEach(el=>el.textContent=T(el.dataset.i18n));
+  $('#languageSelect').value=lang;
+  updateThemeButton();
+  updatePageTitle();
+  renderTemplates(); renderLists();
+  if(selected) selectTemplate(selected,true);
+  if(currentId) { const d=current(); if(d) { $('#editorTitle').textContent=d.title; renderVersions(d); } }
+}
+function updatePageTitle(){
+ const id=$('.page.active')?.id||'dashboard';
+ const map={dashboard:'dashboard',documents:'myDocuments',templates:'templates',form:'createDocument',generating:'createDocument',editor:'editableDocument',help:'howItWorks'};
+ $('#pageTitle').textContent=T(map[id]||'dashboard');
+}
+function updateThemeButton(){
+ $('#themeBtn').textContent=dark?'☀️':'🌙';
+ $('#themeBtn').title=dark?T('lightMode'):T('darkMode');
+ $('#themeBtn').setAttribute('aria-label',$('#themeBtn').title);
+ document.body.classList.toggle('dark-mode',dark);
+}
+function showPage(id){
+ $$('.page').forEach(p=>p.classList.toggle('active',p.id===id));
+ updatePageTitle();
+ $$('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.page===id));
+ $('#sidebar').classList.remove('open');window.scrollTo(0,0);
+ if(id==='documents'||id==='dashboard')renderLists();
+}
+function templateText(name){
+ const x=TEMPLATE_I18N[name];
+ return x?.[lang]||x?.en||[name,TEMPLATES[name].desc];
+}
+function fieldLabel(label){
+ const x=FIELD_I18N[label];
+ if(!x)return label;
+ return ({hi:x[0],gu:x[1],kn:x[2]}[lang]||label);
+}
+function card(name){
+ const t=TEMPLATES[name], tx=templateText(name);
+ return `<button class="template-card" data-template="${esc(name)}"><div class="template-icon">${t.icon}</div><h3>${esc(tx[0])}</h3><p>${esc(tx[1])}</p></button>`;
+}
+function renderTemplates(){
+ const html=Object.keys(TEMPLATES).map(card).join('');
+ $('#popularTemplates').innerHTML=html;$('#templateGrid').innerHTML=html;
+}
+function renderLists(){
+ const recent=docs.slice().sort((a,b)=>b.updatedAt-a.updatedAt);
+ $('#documentCount').textContent=docs.length;
+ const html=recent.length?recent.map(d=>`<div class="list-item"><div><div class="list-title">${esc(d.title)}</div><div class="list-meta">${esc(templateText(d.template)[0])} · ${T('updated')} ${new Date(d.updatedAt).toLocaleString()}</div></div><div><button class="text-btn" data-open="${d.id}">${T('open')}</button><button class="text-btn" data-delete="${d.id}">${T('delete')}</button></div></div>`).join(''):`<p class="empty">${T('noDocuments')}</p>`;
+ $('#recentDocuments').innerHTML=html;$('#allDocuments').innerHTML=html;
+}
+function selectTemplate(name,refresh=false){
+ selected=name;const t=TEMPLATES[name];
+ const previous={};
+ $$('#dynamicFields input, #dynamicFields textarea').forEach(el=>previous[el.name]=el.value);
+ const wasConsent=$('#consent')?.checked||false;
+ $('#selectedName').textContent=templateText(name)[0];
+ $('#dynamicFields').innerHTML=t.fields.map(([key,label,type])=>`<div class="form-group"><label for="f-${key}">${esc(fieldLabel(label))} *</label>${type==='textarea'?`<textarea id="f-${key}" name="${key}" required>${esc(previous[key]||'')}</textarea>`:`<input id="f-${key}" name="${key}" type="${type}" required value="${esc(previous[key]||'')}">`}<span class="error"></span></div>`).join('');
+ $('#consent').checked=refresh?wasConsent:false;
+ $('#consentError').textContent='';
+ if(!refresh)showPage('form');
+}
+function start(){selected=null;showPage('templates')}
+function validForm(){
+ let ok=true;
+ $$('#documentForm [required]').forEach(el=>{const err=el.closest('.form-group')?.querySelector('.error');const bad=!el.value.trim();el.classList.toggle('invalid',bad);if(err)err.textContent=bad?T('required'):'';if(bad)ok=false});
+ const c=$('#consent'),ce=$('#consentError');ce.textContent=c.checked?'':T('acknowledge');if(!c.checked)ok=false;return ok;
+}
+function createDraft(){
+ if(!validForm())return;
+ const d={};new FormData($('#documentForm')).forEach((v,k)=>d[k]=v);
+ showPage('generating');
+ setTimeout(()=>{const now=Date.now(),doc={id:crypto.randomUUID?crypto.randomUUID():String(now),template:selected,title:selected+' — '+(d.client||d.tenant||d.employee||d.recipient||d.property||'Draft'),data:d,content:TEMPLATES[selected].build(d),createdAt:now,updatedAt:now,versions:[]};docs.unshift(doc);currentId=doc.id;persist();openDoc(doc.id);toast(T('draftCreated'))},550);
+}
+function current(){return docs.find(d=>d.id===currentId)}
+function openDoc(id,refresh=false){
+ currentId=id;const d=current();if(!d)return;
+ $('#editorTitle').textContent=d.title;$('#editorText').value=d.content;renderVersions(d);if(!refresh)showPage('editor');
+}
+function saveVersion(manual=false){
+ const d=current();if(!d)return;const content=$('#editorText').value;if(content===d.content&&!manual)return;
+ d.versions.unshift({content:d.content,at:d.updatedAt});d.versions=d.versions.slice(0,10);d.content=content;d.updatedAt=Date.now();persist();renderVersions(d);$('#saveStatus').textContent=T('savedLocally');if(manual)toast(T('versionSaved'));
+}
+function queueSave(){$('#saveStatus').textContent=T('saving');clearTimeout(saveTimer);saveTimer=setTimeout(()=>saveVersion(),600)}
+function renderVersions(d){
+ $('#versions').innerHTML=d.versions.length?d.versions.map((v,i)=>`<div class="version"><div><strong>${T('version')} ${d.versions.length-i}</strong><br><small>${new Date(v.at).toLocaleString()}</small></div><button class="text-btn" data-restore="${i}">${T('restore')}</button></div>`).join(''):`<p class="hint">${T('noEarlierVersions')}</p>`;
+}
+function restore(i){
+ const d=current(),v=d.versions[i];if(!v)return;
+ if(!confirm(T('restoreConfirm')))return;
+ d.versions.unshift({content:d.content,at:d.updatedAt});d.content=v.content;d.updatedAt=Date.now();persist();$('#editorText').value=d.content;renderVersions(d);toast(T('versionRestored'));
+}
+function initLanguageSelector(){
+ $('#languageSelect').innerHTML=Object.entries(LANGS).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');
+ $('#languageSelect').value=lang;
+}
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-page],[data-action],[data-template],[data-open],[data-delete],[data-restore]');
+ if(!b)return;
+ if(b.dataset.page)showPage(b.dataset.page);
+ if(b.dataset.action==='start')start();
+ if(b.dataset.template)selectTemplate(b.dataset.template);
+ if(b.dataset.open)openDoc(b.dataset.open);
+ if(b.dataset.delete){if(confirm(T('deleteConfirm'))){docs=docs.filter(d=>d.id!==b.dataset.delete);persist();toast(T('deleted'))}}
+ if(b.dataset.restore!==undefined)restore(Number(b.dataset.restore));
+});
+$('#documentForm').addEventListener('submit',e=>{e.preventDefault();createDraft()});
+$('#editorText').addEventListener('input',queueSave);
+$('#saveBtn').addEventListener('click',()=>saveVersion(true));
+$('#copyBtn').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('#editorText').value);toast(T('copied'))}catch{toast(T('copyUnavailable'))}});
+$('#printBtn').addEventListener('click',()=>window.print());
+$('#clearVersions').addEventListener('click',()=>{const d=current();if(d&&confirm(T('clearConfirm'))){d.versions=[];persist();renderVersions(d);toast(T('versionsCleared'))}});
+$('#menuBtn').addEventListener('click',()=>$('#sidebar').classList.toggle('open'));
+$('#languageSelect').addEventListener('change',e=>{lang=e.target.value;localStorage.setItem('legalease.language',lang);applyLanguage()});
+$('#themeBtn').addEventListener('click',()=>{dark=!dark;localStorage.setItem('legalease.theme',dark?'dark':'light');updateThemeButton()});
+initLanguageSelector();applyLanguage();
+})();
+</script>
+
+</body>
+</html>
