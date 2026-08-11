@@ -1,0 +1,313 @@
+{
+  "Rental Agreement": [
+    {
+      "act": "Transfer of Property Act, 1882",
+      "sections": ["105", "107"],
+      "topics": ["lease", "creation of lease"],
+      "source_type": "official",
+      "source_title": "India Code - Transfer of Property Act, 1882",
+      "source_url": "https://www.indiacode.nic.in/handle/123456789/12924"
+    },
+    {
+      "act": "Registration Act, 1908",
+      "sections": ["17", "18"],
+      "topics": ["registration", "lease registration"],
+      "source_type": "official",
+      "source_title": "India Code - Registration Act, 1908",
+      "source_url": "https://www.indiacode.nic.in/handle/123456789/2190"
+    },
+    {
+      "act": "Applicable State Stamp and Tenancy Law",
+      "sections": [],
+      "topics": ["stamp duty", "tenancy", "state requirements"],
+      "source_type": "state_dependent",
+      "source_title": "State-specific legal requirements",
+      "source_url": ""
+    }
+  ],
+
+  "Non-Disclosure Agreement": [
+    {
+      "act": "Indian Contract Act, 1872",
+      "sections": ["10", "23", "27", "73", "74"],
+      "topics": [
+        "contract validity",
+        "lawful agreements",
+        "restraint of trade",
+        "breach",
+        "compensation"
+      ],
+      "source_type": "official",
+      "source_title": "India Code - Indian Contract Act, 1872",
+      "source_url": "https://www.indiacode.nic.in/handle/123456789/2187"
+    },
+    {
+      "act": "Specific Relief Act, 1963",
+      "sections": [],
+      "topics": [
+        "specific performance",
+        "injunctions",
+        "contractual relief"
+      ],
+      "source_type": "official",
+      "source_title": "India Code - Specific Relief Act, 1963",
+      "source_url": "https://www.indiacode.nic.in/handle/123456789/17493"
+    }
+  ],
+
+  "Employment Agreement": [
+    {
+      "act": "Indian Contract Act, 1872",
+      "sections": ["10", "11", "27", "73", "74"],
+      "topics": [
+        "contract",
+        "capacity",
+        "restraint of trade",
+        "breach",
+        "compensation"
+      ],
+      "source_type": "official",
+      "source_title": "India Code - Indian Contract Act, 1872",
+      "source_url": "https://www.indiacode.nic.in/handle/123456789/2187"
+    },
+    {
+      "act": "Code on Wages, 2019",
+      "sections": [],
+      "topics": [
+        "wages",
+        "payment",
+        "deductions"
+      ],
+      "source_type": "official",
+      "source_title": "Ministry of Labour and Employment - Labour Codes",
+      "source_url": "https://www.labour.gov.in/offerings/schemes-and-services/details/labour-codes-gzNzQzMtQWa"
+    },
+    {
+      "act": "Industrial Relations Code, 2020",
+      "sections": [],
+      "topics": [
+        "termination",
+        "industrial relations",
+        "employment disputes"
+      ],
+      "source_type": "official",
+      "source_title": "Ministry of Labour and Employment - Labour Codes",
+      "source_url": "https://www.labour.gov.in/offerings/schemes-and-services/details/labour-codes-gzNzQzMtQWa"
+    },
+    {
+      "act": "Code on Social Security, 2020",
+      "sections": [],
+      "topics": [
+        "social security",
+        "employee benefits"
+      ],
+      "source_type": "official",
+      "source_title": "Ministry of Labour and Employment - Labour Codes",
+      "source_url": "https://www.labour.gov.in/offerings/schemes-and-services/details/labour-codes-gzNzQzMtQWa"
+    },
+    {
+      "act": "Occupational Safety, Health and Working Conditions Code, 2020",
+      "sections": [],
+      "topics": [
+        "working conditions",
+        "occupational safety"
+      ],
+      "source_type": "official",
+      "source_title": "Ministry of Labour and Employment - Labour Codes",
+      "source_url": "https://www.labour.gov.in/offerings/schemes-and-services/details/labour-codes-gzNzQzMtQWa"
+    }
+  ],
+
+  "Service Agreement": [
+    {
+      "act": "Indian Contract Act, 1872",
+      "sections": ["10", "37", "73", "74"],
+      "topics": [
+        "contract formation",
+        "performance",
+        "breach",
+        "compensation"
+      ],
+      "source_type": "official",
+      "source_title": "India Code - Indian Contract Act, 1872",
+      "source_url": "https://www.indiacode.nic.in/handle/123456789/2187"
+    },
+    {
+      "act": "Specific Relief Act, 1963",
+      "sections": [],
+      "topics": [
+        "specific performance",
+        "injunctions",
+        "contractual relief"
+      ],
+      "source_type": "official",
+      "source_title": "India Code - Specific Relief Act, 1963",
+      "source_url": "https://www.indiacode.nic.in/handle/123456789/17493"
+    }
+  ],
+
+  "Independent Contractor Agreement": [
+    {
+      "act": "Indian Contract Act, 1872",
+      "sections": ["10", "37", "73", "74"],
+      "topics": [
+        "contract formation",
+        "performance",
+        "breach",
+        "compensation"
+      ],
+      "source_type": "official",
+      "source_title": "India Code - Indian Contract Act, 1872",
+      "source_url": "https://www.indiacode.nic.in/handle/123456789/2187"
+    },
+    {
+      "act": "Current Indian Labour Law Framework",
+      "sections": [],
+      "topics": [
+        "worker classification",
+        "employment relationship",
+        "social security"
+      ],
+      "source_type": "official",
+      "source_title": "Ministry of Labour and Employment - Labour Codes",
+      "source_url": "https://www.labour.gov.in/offerings/schemes-and-services/details/labour-codes-gzNzQzMtQWa"
+    }
+  ],
+
+  "Loan Agreement": [
+    {
+      "act": "Indian Contract Act, 1872",
+      "sections": ["10", "37", "73", "74"],
+      "topics": [
+        "contract",
+        "performance",
+        "default",
+        "compensation"
+      ],
+      "source_type": "official",
+      "source_title": "India Code - Indian Contract Act, 1872",
+      "source_url": "https://www.indiacode.nic.in/handle/123456789/2187"
+    },
+    {
+      "act": "Interest Act, 1978",
+      "sections": ["3", "4", "5"],
+      "topics": [
+        "interest",
+        "court-awarded interest"
+      ],
+      "source_type": "official",
+      "source_title": "India Code - Interest Act, 1978",
+      "source_url": "https://www.indiacode.nic.in/handle/123456789/1724"
+    },
+    {
+      "act": "Negotiable Instruments Act, 1881",
+      "sections": [],
+      "topics": [
+        "promissory notes",
+        "cheques",
+        "negotiable instruments"
+      ],
+      "source_type": "official",
+      "source_title": "India Code - Negotiable Instruments Act, 1881",
+      "source_url": "https://www.indiacode.nic.in/handle/123456789/2189"
+    }
+  ],
+
+  "Bill of Sale": [
+    {
+      "act": "Sale of Goods Act, 1930",
+      "sections": [],
+      "topics": [
+        "sale",
+        "conditions",
+        "warranties",
+        "title",
+        "transfer of property"
+      ],
+      "source_type": "official",
+      "source_title": "India Code - Sale of Goods Act, 1930",
+      "source_url": "https://www.indiacode.nic.in/handle/123456789/2390"
+    },
+    {
+      "act": "Indian Contract Act, 1872",
+      "sections": ["10", "73", "74"],
+      "topics": [
+        "contract",
+        "breach",
+        "compensation"
+      ],
+      "source_type": "official",
+      "source_title": "India Code - Indian Contract Act, 1872",
+      "source_url": "https://www.indiacode.nic.in/handle/123456789/2187"
+    }
+  ],
+
+  "Partnership Agreement": [
+    {
+      "act": "Indian Partnership Act, 1932",
+      "sections": [
+        "4",
+        "6",
+        "9",
+        "11",
+        "25",
+        "27",
+        "32",
+        "39",
+        "58",
+        "69"
+      ],
+      "topics": [
+        "partnership",
+        "partner duties",
+        "partner authority",
+        "liability",
+        "registration",
+        "dissolution"
+      ],
+      "source_type": "official",
+      "source_title": "India Code - Indian Partnership Act, 1932",
+      "source_url": "https://www.indiacode.nic.in/handle/123456789/2394"
+    },
+    {
+      "act": "Indian Contract Act, 1872",
+      "sections": ["10", "11", "23", "27"],
+      "topics": [
+        "contract",
+        "capacity",
+        "lawful object",
+        "restraint of trade"
+      ],
+      "source_type": "official",
+      "source_title": "India Code - Indian Contract Act, 1872",
+      "source_url": "https://www.indiacode.nic.in/handle/123456789/2187"
+    }
+  ],
+
+  "Power of Attorney": [
+    {
+      "act": "Powers-of-Attorney Act, 1882",
+      "sections": ["2", "3", "4"],
+      "topics": [
+        "execution",
+        "authority",
+        "powers of attorney"
+      ],
+      "source_type": "official",
+      "source_title": "India Code - Powers-of-Attorney Act, 1882",
+      "source_url": "https://www.indiacode.nic.in/handle/123456789/2360"
+    },
+    {
+      "act": "Registration Act, 1908",
+      "sections": [],
+      "topics": [
+        "registration",
+        "documents",
+        "property-related instruments"
+      ],
+      "source_type": "official",
+      "source_title": "India Code - Registration Act, 1908",
+      "source_url": "https://www.indiacode.nic.in/handle/123456789/2190"
+    }
+  ]
+}
